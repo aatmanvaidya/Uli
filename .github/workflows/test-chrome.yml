@@ -1,0 +1,73 @@
+name: "TEST"
+
+on:
+  pull_request:
+    branches:
+      - actions
+
+jobs:
+  chrome-publish:
+    name: "Pre Release Extension"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout Development Branch"
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Get commit SHA
+        shell: bash
+        run: |
+          echo "setting variables"
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      - name: "Build and Test"
+        run: |
+          cd browser-extension/plugin
+          ls
+          pwd
+          npm install
+          npm run build
+          zip extension.zip ./dist/ -r
+
+      - name: "Upload extension.zip as artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension
+          path: browser-extension/plugin/extension.zip
+
+      # - name: Create PR Comment with Artifact Link
+      #   uses: actions/github-script@v5
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const artifact_url = `https://github.com/${{ github.context.repo.owner }}/${{ github.context.repo.repo }}/runs/${{ github.run_id }}/artifacts/extension`;
+      #       const comment_body = `You can download the extension artifact [here](${artifact_url}).`;
+      #       await github.rest.issues.createComment({
+      #         issue_number: context.payload.pull_request.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: comment_body
+      #       });
+      - name: Create PR Comment with Artifact Link
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: | 
+            const artifacts_url = `${{ github.event.workflow_run.artifacts_url }}`;
+            const response = await github.request(artifacts_url, {
+              headers: {
+                Accept: "application/vnd.github+json",
+                Authorization: `Bearer ${{ secrets.GITHUB_TOKEN }}`
+              }
+            });
+            const artifact = response.data.artifacts.find(a => a.name === "extension");
+            const artifact_url = artifact.archive_download_url;
+            const comment_body = `You can download the extension artifact here.`;
+            await github.rest.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment_body
+            });
