@@ -56,7 +56,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+            🛠 Your build files are available here - https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }} 
           comment_tag: execution
           mode: recreate
 
