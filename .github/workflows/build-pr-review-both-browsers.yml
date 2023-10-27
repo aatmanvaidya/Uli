@@ -55,7 +55,7 @@ jobs:
 			- name: "Create PR Comment with Artifact Link"
 				uses: thollander/actions-comment-pull-request@v2
 				with:
-					message: |
-						Hello!
+          message: |
+            Hello world ! :wave:
 
       
