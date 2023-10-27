@@ -52,6 +52,13 @@ jobs:
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
 
+      - name: "test"
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+          comment_tag: execution
+
       # - name: Debug GitHub Token Permissions
       #   run: echo ${{ secrets.GITHUB_TOKEN }}
 
