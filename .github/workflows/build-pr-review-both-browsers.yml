@@ -9,8 +9,6 @@ permissions:
   actions: write
   issues: write
   pull-requests: write
-  contents: write
-  repository-projects: write
 
 jobs:
   chrome-publish:
@@ -51,6 +49,14 @@ jobs:
           path: |
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
+
+      - name: "Create PR Comment with Artifact Link"
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            Hello world ! :wave:
+
 
       # - name: Debug GitHub Token Permissions
       #   run: echo ${{ secrets.GITHUB_TOKEN }}
