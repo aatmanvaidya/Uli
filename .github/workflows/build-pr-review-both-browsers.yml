@@ -51,20 +51,12 @@ jobs:
           path: |
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
-
-      # - name: Debug GitHub Token Permissions
-      #   run: echo ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Create PR Comment with Artifact Link
-      #   uses: actions/github-script@v5
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const artifact_url = `https://github.com/${{github.repository_owner}}/${{github.event.repository.name}}/actions/runs/${{ github.run_id }}`;
-      #       const comment_body = `🛠 Your build files are available [here](${artifact_url}).`;
-      #       await github.rest.issues.createComment({
-      #         issue_number: context.payload.pull_request.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: comment_body
-      #       });
+			
+			- name: "Create PR Comment with Artifact Link"
+				uses: thollander/actions-comment-pull-request@v2
+				with:
+					github-token: ${{ secrets.GITHUB_TOKEN }}
+					message: |
+						_(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+					comment_tag: execution
+					# reactions: rocket
