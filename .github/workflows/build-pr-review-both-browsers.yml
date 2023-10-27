@@ -52,4 +52,10 @@ jobs:
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
 
-      # test to see if action is working
+			- name: "Create PR Comment with Artifact Link"
+				uses: thollander/actions-comment-pull-request@v2
+				with:
+					message: |
+						Hello!
+
+      
