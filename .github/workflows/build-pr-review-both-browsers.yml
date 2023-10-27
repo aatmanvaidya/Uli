@@ -52,11 +52,13 @@ jobs:
 
       - name: "Create PR Comment with Artifact Link"
         uses: thollander/actions-comment-pull-request@v2
+        env:
+          URL_PLACEHOLDER: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            Hello world ! :wave:
-          reactions: eyes, rocket
+            Hello world ! :wave: - Your build files are available [URL_PLACEHOLDER]
+          # reactions: rocket
 
 
       # - name: Debug GitHub Token Permissions
