@@ -52,11 +52,12 @@ jobs:
             browser-extension/plugin/extension-firefox/
             browser-extension/plugin/extension-chrome/
 			
+			# uses the github token by default
 			- name: "Create PR Comment with Artifact Link"
 				uses: thollander/actions-comment-pull-request@v2
 				with:
-					github-token: ${{ secrets.GITHUB_TOKEN }}
 					message: |
 						hello
 					comment_tag: execution
 					# reactions: rocket
+
