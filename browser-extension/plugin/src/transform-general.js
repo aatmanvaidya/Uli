@@ -1,4 +1,4 @@
-import { replaceSlur } from './slur-replace';
+import { replaceSlur, replaceSlur2 } from './slur-replace';
 import { log } from './logger';
 import repository from './repository';
 const { getPreferenceData } = repository;
@@ -9,7 +9,11 @@ function bft(node) {
         const originalText = node.textContent;
         // Get cursor position
         const originalCursorPosition = getCaretCharacterOffsetWithin(node);
-        const replacementText = replaceSlur(originalText);
+        // const replacementText = replaceSlur(originalText);
+        const replacedResult = replaceSlur2(originalText)
+        const replacementText = replacedResult.sentence;
+        const replacedWords = replacedResult.replacedWords;
+        console.log('Replaced Words', replacedWords);
 
         if (replacementText !== originalText) {
             node.textContent = replacementText;
